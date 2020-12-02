@@ -1,0 +1,68 @@
+Sub Analyze()
+    Dim TickSymbol As String
+    Dim Counter As Integer
+    Dim YearlyChange As Double
+    Dim PercentChange As Double
+    Dim OpenTotal As Double
+    Dim CloseTotal As Double
+    Dim StockTotal As Double
+    Counter = 1
+    For i = 2 To 70926
+        If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+            TickSymbol = Cells(i, 1).Value
+            Counter = Counter + 1
+            Range("I" & Counter).Value = TickSymbol
+        Else
+        End If
+    Next i
+    Counter = 1
+    For i = 2 To 70926
+        If Cells(i + 1, 1).Value = Cells(i, 1).Value Then
+            YearlyChange = YearlyChange + (Cells(i, 3).Value - Cells(i, 6).Value)
+        Else
+            Counter = Counter + 1
+            YearlyChange = YearlyChange + (Cells(i, 3).Value - Cells(i, 6).Value)
+            Range("J" & Counter).Value = YearlyChange
+            YearlyChange = 0
+        End If
+    Next i
+    Counter = 1
+    YearlyChange = 0
+    For i = 2 To 70926
+        If Cells(i + 1, 1).Value = Cells(i, 1).Value Then
+            OpenTotal = OpenTotal + Cells(i, 3)
+            CloseTotal = CloseTotal + Cells(i, 6)
+        Else
+            Counter = Counter + 1
+            YearlyChange = OpenTotal - CloseTotal
+            PercentChange = YearlyChange / OpenTotal
+            PercentChange = PercentChange * 100
+            Range("K" & Counter).Value = PercentChange
+            Range("K" & Counter).NumberFormat = "0.00%"
+            OpenTotal = 0
+            CloseTotal = 0
+            YearlyChange = 0
+        End If
+    Next i
+    Counter = 1
+    For i = 2 To 70926
+        If Cells(1, 10).Value = 0 Then
+            Cells(i, 10).Interior.ColorIndex = 0
+        End If
+        If Cells(i, 10).Value > 0 Then
+            Cells(i, 10).Interior.ColorIndex = 4
+        End If
+        If Cells(i, 10).Value < 0 Then
+            Cells(i, 10).Interior.ColorIndex = 3
+        End If
+    Next i
+    For i = 2 To 70926
+        If Cells(i + 1, 1).Value = Cells(i, 1).Value Then
+            StockTotal = StockTotal + Cells(i, 7).Value
+        Else
+            Counter = Counter + 1
+            Range("L" & Counter).Value = StockTotal
+            StockTotal = 0
+        End If
+    Next i
+End Sub
